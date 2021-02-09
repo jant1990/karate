@@ -2,8 +2,8 @@
 Feature: Tests for the home page
 
     Background: Define URL
-         Given url 'https://conduit.productionready.io/api/'
-@debug
+         Given url apiUrl
+
     Scenario: Get all tags
         Given path 'tags'
         When method Get 
