@@ -1,4 +1,4 @@
-@jbrotons
+
 Feature: Sign up new user
 
     Background: Preconditions
@@ -14,6 +14,8 @@ Feature: Sign up new user
             }
         """
         * def randomUsername2 = call jsFunction
+        * def randonEmail = dataGenerator.getRandomEmail()
+        * def randomUsername = dataGenerator.getRandomUsername()
 
         Given url apiUrl
     
@@ -51,3 +53,51 @@ Feature: Sign up new user
                 }
             }
         """
+
+
+    Scenario: Validate Sign up Error messages1
+        # Given def userData = {"email": "jbrotons90@gmail.com", "username": "jbrotonsUser12"}
+
+        * def randonEmail = dataGenerator.getRandomEmail()
+        * def randomUsername = dataGenerator.getRandomUsername()
+
+        Given path 'users'
+        And request 
+        """
+        {
+            "user":{
+                 "email": "jbrotos@outlook.com",
+                 "password":"pepitogrillo01",
+                 "username": #(randomUsername2)
+            }
+        }        
+        """
+        When method Post
+        Then status 422
+
+@jbrotons
+   Scenario Outline: Validate Sign up Error messages
+        # Given def userData = {"email": "jbrotons90@gmail.com", "username": "jbrotonsUser12"}
+
+        * def randonEmail = dataGenerator.getRandomEmail()
+        * def randomUsername = dataGenerator.getRandomUsername()
+
+        Given path 'users'
+        And request 
+        """
+        {
+            "user":{
+                 "email": "<email>",
+                 "password":"<password>",
+                 "username": "<username>"
+            }
+        }        
+        """
+        When method Post
+        Then status 422
+        And match response == <errorResponse>
+
+        Examples: 
+            | email          | password  | username       | errorResponse                                        |
+            | #(randonEmail) | Karate123 | pepitogrillo01 | {"errors": {"username": ["has already been taken"]}} |
+            | jbrotons@outlook.com | Karate123 | #(randomUsername) | {"errors": {"email": ["has already been taken"]}} |

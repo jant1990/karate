@@ -3,6 +3,12 @@ Feature: Articles
 
     Background: Define URL
         Given url apiUrl
+        * def articleRequestBody = read('classpath:conduitApp/json/newArticleRequest.json')
+        * def dataGenerator = Java.type('helpers.DataGenerator')
+        * set articleRequestBody.article.title = dataGenerator.getRandomArticleValues().title
+        * set articleRequestBody.article.description = dataGenerator.getRandomArticleValues().description
+        * set articleRequestBody.article.body = dataGenerator.getRandomArticleValues().body
+
         # Given path 'users/login'
         # And request {"user":{"email":"jbrotons@outlook.com","password":"pepitogrillo01"}}
         # When method Post 
@@ -15,26 +21,26 @@ Feature: Articles
     Scenario: Create a new article
         #Given header Authorization = 'Token ' + token
         Given path 'articles'
-        And request {"article":{"tagList":["jant901"],"title":"jant901","description":"jant901","body":"jant901"}}
+        And request articleRequestBody
         When method Post
         Then status 200
-        And match response.article.title == 'jant901'
+        And match response.article.title == articleRequestBody.article.title
         
 
     Scenario: Delete article
         #Given header Authorization = 'Token ' + token
         Given path 'articles'
-        And request {"article":{"tagList":["jant902"],"title":"jant902","description":"jant902","body":"jant902"}}
+        And request articleRequestBody
         When method Post
         Then status 200
-        And match response.article.title == 'jant902'
+        And match response.article.title == articleRequestBody.article.title
         * def articleId = response.article.slug
 
         Given params {limit: 10, offset: 0}
         Given path 'articles'
         When method Get
         Then status 200
-        And match response.articles[0].title == 'jant902'
+        And match response.articles[0].title == articleRequestBody.article.title
 
         #Given header Authorization = 'Token ' + token
         Given path 'articles', articleId 
