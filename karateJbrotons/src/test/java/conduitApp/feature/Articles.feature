@@ -1,4 +1,4 @@
-@regression
+@parallel=false
 Feature: Articles
 
     Background: Define URL
