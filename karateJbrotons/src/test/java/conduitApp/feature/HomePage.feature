@@ -1,4 +1,4 @@
-@debug
+@brotons
 Feature: Tests for the home page
 
     Background: Define URL
@@ -55,3 +55,22 @@ Feature: Tests for the home page
             }
         """
 
+    Scenario: Conditional logic
+        Given params {limit: 10, offset: 0}
+        Given path 'articles'
+        When method Get
+        Then status 200
+        * def favoritesCounter = response.articles[0].favoritesCount
+        * def article = response.articles[0]
+        
+        # Conditional
+        # * if (favoritesCounter == 0) karate.call('classpath:helpers/addLikes.feature', article)
+
+        # Javascript conditional calling feature
+        * def result = favoritesCounter == 0 ? karate.call('classpath:helpers/addLikes.feature', article).favoriteCount : favoritesCounter
+
+        Given params {limit: 10, offset: 0}
+        Given path 'articles'
+        When method Get
+        Then status 200
+        And match response.articles[0].favoritesCount == result
