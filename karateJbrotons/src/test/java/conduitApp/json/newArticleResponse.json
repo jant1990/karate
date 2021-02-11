@@ -1,0 +1,23 @@
+{
+    "articles": [
+        {
+            "title": "a",
+            "slug": "a-9612p4",
+            "body": "a",
+            "createdAt": "2021-02-11T08:47:55.173Z",
+            "updatedAt": "2021-02-11T08:48:31.105Z",
+            "tagList": [
+                "a"
+            ],
+            "description": "a",
+            "author": {
+                "username": "aaaaaaaatsratsrtsart",
+                "bio": null,
+                "image": "https://static.productionready.io/images/smiley-cyrus.jpg",
+                "following": false
+            },
+            "favorited": false,
+            "favoritesCount": 0
+        }
+    ]
+}

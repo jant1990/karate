@@ -8,7 +8,8 @@ Feature: Articles
         * set articleRequestBody.article.title = dataGenerator.getRandomArticleValues().title
         * set articleRequestBody.article.description = dataGenerator.getRandomArticleValues().description
         * set articleRequestBody.article.body = dataGenerator.getRandomArticleValues().body
-
+        * print articleRequestBody
+        
         # Given path 'users/login'
         # And request {"user":{"email":"jbrotons@outlook.com","password":"pepitogrillo01"}}
         # When method Post 
