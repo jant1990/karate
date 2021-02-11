@@ -74,3 +74,27 @@ Feature: Tests for the home page
         When method Get
         Then status 200
         And match response.articles[0].favoritesCount == result
+
+    
+@retry
+    Scenario: Retry call
+        * configure retry = {count: 10, interval: 5000 }
+
+        Given params {limit: 10, offset: 0}
+        Given path 'articles'
+        # Condition retry should be Before method
+        And retry until response.articles[0].favoritesCount == 1
+        When method Get
+        Then status 200
+
+@sleep
+    Scenario: Sleep call
+        * def sleep = function(pause){ java.lang.Thread.sleep(pause) }
+        
+        # Sleep evaluation
+        Given params {limit: 10, offset: 0}
+        Given path 'articles'
+        When method Get
+        # Waiting 10 seconds
+        * eval sleep(10000)
+        Then status 200
