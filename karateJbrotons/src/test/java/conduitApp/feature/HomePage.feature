@@ -98,3 +98,22 @@ Feature: Tests for the home page
         # Waiting 10 seconds
         * eval sleep(10000)
         Then status 200
+@cast
+    Scenario: Number to String
+        # Will fail comparision between number and string...
+        # * match 10 == '10'
+        * def foo = 10
+        #Converting to string concat empty string
+        * def json = {"bar": #(foo+'')}
+        * match json == {"bar": '10'}
+
+@cast2
+    Scenario: String to Number 
+        # Will fail comparision between string and number ...
+        * def foo = '10'
+        #Converting to number with *1
+        * def json = {"bar": #(foo*1)}
+        # to remove decimals 10.0 we use ~~  
+        * def json2 = {"bar": #(~~parseInt(foo))}
+        * match json == {"bar": 10}
+        * match json2 == {"bar": 10}
