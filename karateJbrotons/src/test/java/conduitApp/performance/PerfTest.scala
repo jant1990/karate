@@ -3,8 +3,11 @@ package performance
 import com.intuit.karate.gatling.PreDef._
 import io.gatling.core.Predef._
 import scala.concurrent.duration._
+import conduitApp.performance.createTokens.CreateTokens
 
 class PerfTest extends Simulation {
+
+  CreateTokens.createAccessTokens()
 
   val protocol = karateProtocol(
       "/api/articles/{articleId}" -> Nil
@@ -12,10 +15,13 @@ class PerfTest extends Simulation {
 
   //protocol.nameResolver = (req, ctx) => req.getHeader("karate-name")
 
+
   // random order data from the csv 
   var csvFeeder = csv("articles.csv").circular
+  val tokenFeeder = Iterator.continually(Map("token" -> CreateTokens.getNextToken()))
 
-  val createArticle = scenario("Create and Delete article").feed(csvFeeder).exec(karateFeature("classpath:conduitApp/performance/createArticle.feature"))
+
+  val createArticle = scenario("Create and Delete article").feed(csvFeeder).feed(tokenFeeder).exec(karateFeature("classpath:conduitApp/performance/createArticle.feature"))
 
   setUp(
     //createArticle.inject(rampUsers(10) during (5 seconds)).protocols(protocol)
