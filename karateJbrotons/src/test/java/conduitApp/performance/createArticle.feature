@@ -19,6 +19,7 @@ Feature: Articles
         * configure headers = {"Authorization": #('Token ' + __gatling.token)}
         Given path 'articles'
         And request articleRequestBody
+        And header karate-name = 'Title Requested ' + __gatling.Title
         When method Post
         Then status 200
         * def articleId = response.article.slug
